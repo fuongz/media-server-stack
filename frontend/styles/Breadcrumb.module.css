@@ -1,0 +1,15 @@
+.item:last-child {
+  @apply border-r-0;
+}
+
+.item {
+  @apply border-r border-zinc-800;
+}
+
+.item > a {
+  @apply text-zinc-400 px-6 py-2 transition rounded;
+}
+
+.item > a:hover {
+  @apply text-zinc-100 bg-zinc-700 transition;
+}
