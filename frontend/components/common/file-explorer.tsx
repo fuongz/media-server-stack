@@ -7,7 +7,7 @@ interface Props {
   pathArr: string[]
 }
 
-const FileExlorerComponent: FC<Props> = ({ records, pathArr }) => {
+const FileExplorerComponent: FC<Props> = ({ records, pathArr }) => {
   const [folders, setFolders] = useState<any[]>([])
   const [files, setFiles] = useState<any[]>([])
 
@@ -47,4 +47,4 @@ const FileExlorerComponent: FC<Props> = ({ records, pathArr }) => {
   )
 }
 
-export default FileExlorerComponent
+export default FileExplorerComponent

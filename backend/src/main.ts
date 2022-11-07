@@ -3,10 +3,10 @@
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
-const serveStatic = require('serve-static')
-const { getAllFolders } = require('./utils/file')
+import serveStatic from 'serve-static'
+import { getAllFolders, sync } from './utils/file'
 import configs from './configs'
-import { connect, getConfigs, disconnect, selectMedia, insertMedia, selectMediaByParentId } from './configs/database'
+import { connect, getConfigs, disconnect } from './configs/database'
 
 // App
 const app = express()
@@ -58,20 +58,6 @@ app.get('/api/v1/fetch', (req: any, res: any) => {
   try {
     const folders = getAllFolders(slugs ? slugs.split(',') : [])
 
-    connect((err: any) => {
-      for (let i = 0; i < folders.length; i++) {
-        selectMedia(folders[i].slug, (err: any, rows: any) => {
-          if (rows.length === 0) {
-            insertMedia(folders[i], (err: any) => {
-              if (err) {
-                console.log(err)
-              }
-            })
-          }
-        })
-      }
-    })
-
     return res.status(200).json({
       status: 1,
       meta: {
@@ -93,30 +79,6 @@ app.get('/api/v1/fetch/:path*', (req: any, res: any) => {
   try {
     const folders = getAllFolders(pathArr)
 
-    connect((err: any) => {
-      for (let i = 0; i < folders.length; i++) {
-        selectMedia(pathArr[pathArr.length - 1], (err: any, rows: any) => {
-          if (rows.length > 0) {
-            selectMedia(folders[i].slug, (err: any, childs: any) => {
-              if (childs.length === 0) {
-                insertMedia(
-                  {
-                    ...folders[i],
-                    parent_id: rows[0].id,
-                  },
-                  (err: any) => {
-                    if (err) {
-                      console.log(err)
-                    }
-                  }
-                )
-              }
-            })
-          }
-        })
-      }
-    })
-
     return res.status(200).json({
       status: 1,
       meta: {
@@ -132,9 +94,22 @@ app.get('/api/v1/fetch/:path*', (req: any, res: any) => {
   }
 })
 
+app.get('/api/v1/sync', (req: any, res: any) => {
+  try {
+    sync()
+
+    return res.status(200).json({ status: 1, message: `Sync successfully!` })
+  } catch (err: any) {
+    if (configs.debug === true) {
+      return res.status(500).json({ status: 0, message: err.message })
+    }
+    return res.status(500).json({ status: 0, message: `Sync failed!` })
+  }
+})
+
 // Start!
 app.listen(process.env.PORT || 3001, () => {
-  console.log('Server is running on ' + configs.baseUrl + ':' + configs.port)
+  console.log('Server is running on ' + configs.baseUrl)
   console.log('===')
   console.log(' + Whitelist', configs.corsWhitelist)
   console.log('===')

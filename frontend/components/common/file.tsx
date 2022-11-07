@@ -34,12 +34,22 @@ const PhotoComponent: FC<PhotoProps> = ({ file }) => {
   )
 }
 
+const VideoComponent: FC<PhotoProps> = ({ file }) => {
+  return (
+    <Link href={`/watch?v=${file.file}`}>
+      <a className="px-4 py-2 text-zinc-400 rounded-md border border-zinc-700 hover:bg-zinc-800 hover:transition transition overflow-hidden text-ellipsis">{file.name}</a>
+    </Link>
+  )
+}
+
 const FileComponent: FC<Props> = ({ file }) => {
   return (
     <>
       {file ? (
         <>
-          {file.is_photo ? <PhotoComponent file={file} /> : <></>} {!file.is_photo ? <OtherFileComponent file={file} /> : <></>}
+          {file.is_photo ? <PhotoComponent file={file} /> : <></>}
+          {file.is_video ? <VideoComponent file={file} /> : <></>}
+          {!file.is_photo && !file.is_video ? <OtherFileComponent file={file} /> : <></>}
         </>
       ) : (
         <></>

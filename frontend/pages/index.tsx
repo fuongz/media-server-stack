@@ -1,8 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import BreadcrumbComponent from '../components/common/breadcrumb'
-import FileExlorerComponent from '../components/common/file-explorer'
-import FolderComponent from '../components/common/folder'
+import FileExplorerComponent from '../components/common/file-explorer'
 import { getFolder } from '../lib/api'
 
 interface Props {
@@ -18,7 +17,7 @@ const Home: NextPage<Props> = ({ records }) => {
 
       <main className="p-2 container mx-auto">
         <BreadcrumbComponent paths={[]} />
-        <FileExlorerComponent records={records} pathArr={[]} />
+        <FileExplorerComponent records={records} pathArr={[]} />
       </main>
     </>
   )

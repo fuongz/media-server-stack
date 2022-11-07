@@ -22,9 +22,9 @@ export const VideoJS = (props: any) => {
       // You could update an existing player in the `else` block here
       // on prop change, for example:
     } else {
-      // const player = playerRef.current;
-      // player.autoplay(options.autoplay);
-      // player.src(options.sources);
+      const player = playerRef.current
+      player.autoplay(options.autoplay)
+      player.src(options.sources)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options, videoRef])

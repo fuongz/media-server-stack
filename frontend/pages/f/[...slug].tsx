@@ -10,7 +10,7 @@ interface Props {
   pathArr: any
 }
 
-const FileExlorer: NextPage<Props> = ({ records, pathArr }) => {
+const FileExplorer: NextPage<Props> = ({ records, pathArr }) => {
   const [paths, setPaths] = useState<string[]>([])
 
   useMemo(() => {
@@ -33,7 +33,7 @@ const FileExlorer: NextPage<Props> = ({ records, pathArr }) => {
   )
 }
 
-export default FileExlorer
+export default FileExplorer
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug: string[] = params?.slug && typeof params.slug !== 'string' ? params.slug : []
   const data = await getFolder(slug)
